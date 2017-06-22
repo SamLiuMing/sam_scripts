@@ -1,0 +1,18 @@
+通过密钥认证远程登录
+1. 需要使用ssh-keygen在本机产生公钥私钥对
+2. 将本机公钥拷贝到远程服务器上的~/.ssh/authorized_keys文件中
+3. 再次登录远程服务器时输入密钥认证密码即可完成登录
+
+鉴于每次使用密钥登录都需要输入密码，使用ssh-agent
+
+ssh-agent 是用于管理SSH private keys的,是一个长时间持续运行的守护进程（daemon）. 唯一目的就是对解密的私钥进行高速缓存
+ssh-add命令是把专用密钥添加到ssh-agent的高速缓存中
+开启ssh-agent后把私钥加载到ssh-agent的高速缓存中(内存)
+eval `ssh-agent` ; ssh-add ~/.ssh/id_ra
+之后通过该私钥再次登录时将不必再输入密钥认证密码
+当不需要登录操作时，可以使用killall命令将ssh-agent进程杀死即可
+
+注:killall命令通过安装psmisc即可
+   eval的作用是再次执行命令行处理,即对一个命令行，执行两次命令行处理
+   上述命令中先执行ssh-agent命令,然后将输出再执行一次
+
